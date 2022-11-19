@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Seychelles proposed new Protected Areas and KBAs with government vs. private ownership</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/KBA_3.js"></script>
+        <script src="data/kbaLandownershipcoloredbyownership_4.js"></script>
+        <script src="data/ProposedPA_5.js"></script>
+        <script src="data/kbaLandownership_6.js"></script>
+        <script src="data/Explorations_7.js"></script>
+        <script src="data/Explorations_8.js"></script>
+        <script src="data/Roads_9.js"></script>
+        <script src="data/Islands_10.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-4.341037449666305,55.69971409320358],[-4.3113540343102,55.75234157706198]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        map.createPane('pane_CurrentForestCover_1');
+        map.getPane('pane_CurrentForestCover_1').style.zIndex = 401;
+        var img_CurrentForestCover_1 = 'data/CurrentForestCover_1.png';
+        var img_bounds_CurrentForestCover_1 = [[-4.81290379772716,55.1962639804967],[-4.2027680567531815,55.95749635225958]];
+        var layer_CurrentForestCover_1 = new L.imageOverlay(img_CurrentForestCover_1,
+                                              img_bounds_CurrentForestCover_1,
+                                              {pane: 'pane_CurrentForestCover_1'});
+        bounds_group.addLayer(layer_CurrentForestCover_1);
+        map.createPane('pane_IntegratedLandUses_2');
+        map.getPane('pane_IntegratedLandUses_2').style.zIndex = 402;
+        var img_IntegratedLandUses_2 = 'data/IntegratedLandUses_2.png';
+        var img_bounds_IntegratedLandUses_2 = [[-4.812903798,55.19626398],[-4.202768057,55.957496352]];
+        var layer_IntegratedLandUses_2 = new L.imageOverlay(img_IntegratedLandUses_2,
+                                              img_bounds_IntegratedLandUses_2,
+                                              {pane: 'pane_IntegratedLandUses_2'});
+        bounds_group.addLayer(layer_IntegratedLandUses_2);
+        function pop_KBA_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Protection status</th>\
+                        <td>' + (feature.properties['STATUS'] !== null ? autolinker.link(feature.properties['STATUS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">KBA-PA Name</th>\
+                        <td>' + (feature.properties['PA_NAME'] !== null ? autolinker.link(feature.properties['PA_NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_KBA_3_0(feature) {
+            switch(String(feature.properties['q2wHide_STATUSID'])) {
+                case '1':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,131,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,131,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '3':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,131,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '4':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,131,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '5':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,131,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '6':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(69,214,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '7':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(69,214,156,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '8':
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,114,152,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_KBA_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_KBA_3');
+        map.getPane('pane_KBA_3').style.zIndex = 403;
+        map.getPane('pane_KBA_3').style['mix-blend-mode'] = 'normal';
+        var layer_KBA_3 = new L.geoJson(json_KBA_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KBA_3',
+            layerName: 'layer_KBA_3',
+            pane: 'pane_KBA_3',
+            onEachFeature: pop_KBA_3,
+            style: style_KBA_3_0,
+        });
+        bounds_group.addLayer(layer_KBA_3);
+        function pop_kbaLandownershipcoloredbyownership_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Parcel code</th>\
+                        <td>' + (feature.properties['cadID'] !== null ? autolinker.link(feature.properties['cadID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">KBA name</th>\
+                        <td>' + (feature.properties['kbaName'] !== null ? autolinker.link(feature.properties['kbaName'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ownership type</th>\
+                        <td>' + (feature.properties['ownType'] !== null ? autolinker.link(feature.properties['ownType'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Forest cover (ha)</th>\
+                        <td>' + (feature.properties['cadForest'] !== null ? autolinker.link(feature.properties['cadForest'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intersection of unprotected KBA (ha)</th>\
+                        <td>' + (feature.properties['unprotectedKBA'] !== null ? autolinker.link(feature.properties['unprotectedKBA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intersection of proposed PA</th>\
+                        <td>' + (feature.properties['proposedPA'] !== null ? autolinker.link(feature.properties['proposedPA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_kbaLandownershipcoloredbyownership_4_0(feature) {
+            switch(String(feature.properties['ownType'])) {
+                case 'government':
+                    return {
+                pane: 'pane_kbaLandownershipcoloredbyownership_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(69,214,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'governmentLeased':
+                    return {
+                pane: 'pane_kbaLandownershipcoloredbyownership_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(69,214,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'private':
+                    return {
+                pane: 'pane_kbaLandownershipcoloredbyownership_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'privateLeased':
+                    return {
+                pane: 'pane_kbaLandownershipcoloredbyownership_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_kbaLandownershipcoloredbyownership_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(170,210,77,0.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_kbaLandownershipcoloredbyownership_4');
+        map.getPane('pane_kbaLandownershipcoloredbyownership_4').style.zIndex = 404;
+        map.getPane('pane_kbaLandownershipcoloredbyownership_4').style['mix-blend-mode'] = 'normal';
+        var layer_kbaLandownershipcoloredbyownership_4 = new L.geoJson(json_kbaLandownershipcoloredbyownership_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_kbaLandownershipcoloredbyownership_4',
+            layerName: 'layer_kbaLandownershipcoloredbyownership_4',
+            pane: 'pane_kbaLandownershipcoloredbyownership_4',
+            onEachFeature: pop_kbaLandownershipcoloredbyownership_4,
+            style: style_kbaLandownershipcoloredbyownership_4_0,
+        });
+        bounds_group.addLayer(layer_kbaLandownershipcoloredbyownership_4);
+        function pop_ProposedPA_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">KBA Name</th>\
+                        <td>' + (feature.properties['PA_NAME'] !== null ? autolinker.link(feature.properties['PA_NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ProposedPA_5_0() {
+            return {
+                pane: 'pane_ProposedPA_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,157,231,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_ProposedPA_5');
+        map.getPane('pane_ProposedPA_5').style.zIndex = 405;
+        map.getPane('pane_ProposedPA_5').style['mix-blend-mode'] = 'normal';
+        var layer_ProposedPA_5 = new L.geoJson(json_ProposedPA_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ProposedPA_5',
+            layerName: 'layer_ProposedPA_5',
+            pane: 'pane_ProposedPA_5',
+            onEachFeature: pop_ProposedPA_5,
+            style: style_ProposedPA_5_0,
+        });
+        bounds_group.addLayer(layer_ProposedPA_5);
+        map.addLayer(layer_ProposedPA_5);
+        function pop_kbaLandownership_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Parcel code</th>\
+                        <td>' + (feature.properties['cadID'] !== null ? autolinker.link(feature.properties['cadID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">KBA name</th>\
+                        <td>' + (feature.properties['kbaName'] !== null ? autolinker.link(feature.properties['kbaName'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ownership type</th>\
+                        <td>' + (feature.properties['ownType'] !== null ? autolinker.link(feature.properties['ownType'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Forest cover (ha)</th>\
+                        <td>' + (feature.properties['cadForest'] !== null ? autolinker.link(feature.properties['cadForest'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intersection of unprotected KBA (ha)</th>\
+                        <td>' + (feature.properties['unprotectedKBA'] !== null ? autolinker.link(feature.properties['unprotectedKBA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intersection of proposed PA</th>\
+                        <td>' + (feature.properties['proposedPA'] !== null ? autolinker.link(feature.properties['proposedPA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_kbaLandownership_6_0() {
+            return {
+                pane: 'pane_kbaLandownership_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(19,4,231,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_kbaLandownership_6');
+        map.getPane('pane_kbaLandownership_6').style.zIndex = 406;
+        map.getPane('pane_kbaLandownership_6').style['mix-blend-mode'] = 'normal';
+        var layer_kbaLandownership_6 = new L.geoJson(json_kbaLandownership_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_kbaLandownership_6',
+            layerName: 'layer_kbaLandownership_6',
+            pane: 'pane_kbaLandownership_6',
+            onEachFeature: pop_kbaLandownership_6,
+            style: style_kbaLandownership_6_0,
+        });
+        bounds_group.addLayer(layer_kbaLandownership_6);
+        map.addLayer(layer_kbaLandownership_6);
+        function pop_Explorations_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['date'] !== null ? autolinker.link(feature.properties['date'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['device'] !== null ? autolinker.link(feature.properties['device'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['model'] !== null ? autolinker.link(feature.properties['model'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['describe'] !== null ? autolinker.link(feature.properties['describe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['team'] !== null ? autolinker.link(feature.properties['team'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['note'] !== null ? autolinker.link(feature.properties['note'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['layer'] !== null ? autolinker.link(feature.properties['layer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['path'] !== null ? autolinker.link(feature.properties['path'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Explorations_7_0() {
+            return {
+                pane: 'pane_Explorations_7',
+                opacity: 1,
+                color: 'rgba(251,255,2,1.0)',
+                dashArray: '10,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Explorations_7');
+        map.getPane('pane_Explorations_7').style.zIndex = 407;
+        map.getPane('pane_Explorations_7').style['mix-blend-mode'] = 'normal';
+        var layer_Explorations_7 = new L.geoJson(json_Explorations_7, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Explorations_7',
+            layerName: 'layer_Explorations_7',
+            pane: 'pane_Explorations_7',
+            onEachFeature: pop_Explorations_7,
+            style: style_Explorations_7_0,
+        });
+        bounds_group.addLayer(layer_Explorations_7);
+        function pop_Explorations_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LENGTH'] !== null ? autolinker.link(feature.properties['LENGTH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REMARKS'] !== null ? autolinker.link(feature.properties['REMARKS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REC_TIME'] !== null ? autolinker.link(feature.properties['REC_TIME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Explorations_8_0() {
+            return {
+                pane: 'pane_Explorations_8',
+                opacity: 1,
+                color: 'rgba(240,240,240,1.0)',
+                dashArray: '10,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Explorations_8');
+        map.getPane('pane_Explorations_8').style.zIndex = 408;
+        map.getPane('pane_Explorations_8').style['mix-blend-mode'] = 'normal';
+        var layer_Explorations_8 = new L.geoJson(json_Explorations_8, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Explorations_8',
+            layerName: 'layer_Explorations_8',
+            pane: 'pane_Explorations_8',
+            onEachFeature: pop_Explorations_8,
+            style: style_Explorations_8_0,
+        });
+        bounds_group.addLayer(layer_Explorations_8);
+        function pop_Roads_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LOCATION'] !== null ? autolinker.link(feature.properties['LOCATION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LENGTH'] !== null ? autolinker.link(feature.properties['LENGTH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TYPE'] !== null ? autolinker.link(feature.properties['TYPE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['START_FROM'] !== null ? autolinker.link(feature.properties['START_FROM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UP_TO'] !== null ? autolinker.link(feature.properties['UP_TO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SURFACE'] !== null ? autolinker.link(feature.properties['SURFACE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SOURCETHM'] !== null ? autolinker.link(feature.properties['SOURCETHM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISLAND'] !== null ? autolinker.link(feature.properties['ISLAND'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Roads_9_0() {
+            return {
+                pane: 'pane_Roads_9',
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Roads_9');
+        map.getPane('pane_Roads_9').style.zIndex = 409;
+        map.getPane('pane_Roads_9').style['mix-blend-mode'] = 'normal';
+        var layer_Roads_9 = new L.geoJson(json_Roads_9, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Roads_9',
+            layerName: 'layer_Roads_9',
+            pane: 'pane_Roads_9',
+            onEachFeature: pop_Roads_9,
+            style: style_Roads_9_0,
+        });
+        bounds_group.addLayer(layer_Roads_9);
+        map.addLayer(layer_Roads_9);
+        function pop_Islands_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['gazet_id'] !== null ? autolinker.link(feature.properties['gazet_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['isl_gr'] !== null ? autolinker.link(feature.properties['isl_gr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Islands_10_0() {
+            return {
+                pane: 'pane_Islands_10',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,125,183,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Islands_10');
+        map.getPane('pane_Islands_10').style.zIndex = 410;
+        map.getPane('pane_Islands_10').style['mix-blend-mode'] = 'normal';
+        var layer_Islands_10 = new L.geoJson(json_Islands_10, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Islands_10',
+            layerName: 'layer_Islands_10',
+            pane: 'pane_Islands_10',
+            onEachFeature: pop_Islands_10,
+            style: style_Islands_10_0,
+        });
+        bounds_group.addLayer(layer_Islands_10);
+        map.addLayer(layer_Islands_10);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Seychelles proposed new Protected Areas and KBAs with government vs. private ownership</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'topright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'This is an interactive map. You can search a parcel number, zoom in and out, and add or remove layers.';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Islands_10.png" /> Islands': layer_Islands_10,'<img src="legend/Roads_9.png" /> Roads': layer_Roads_9,'<img src="legend/Explorations_8.png" /> Explorations': layer_Explorations_8,'<img src="legend/Explorations_7.png" /> Explorations': layer_Explorations_7,'<img src="legend/kbaLandownership_6.png" /> kbaLandownership': layer_kbaLandownership_6,'<img src="legend/ProposedPA_5.png" /> ProposedPA': layer_ProposedPA_5,'kbaLandownership colored by ownership<br /><table><tr><td style="text-align: center;"><img src="legend/kbaLandownershipcoloredbyownership_4_government0.png" /></td><td>government</td></tr><tr><td style="text-align: center;"><img src="legend/kbaLandownershipcoloredbyownership_4_governmentLeased1.png" /></td><td>governmentLeased</td></tr><tr><td style="text-align: center;"><img src="legend/kbaLandownershipcoloredbyownership_4_private2.png" /></td><td>private</td></tr><tr><td style="text-align: center;"><img src="legend/kbaLandownershipcoloredbyownership_4_privateLeased3.png" /></td><td>privateLeased</td></tr><tr><td style="text-align: center;"><img src="legend/kbaLandownershipcoloredbyownership_4_4.png" /></td><td></td></tr></table>': layer_kbaLandownershipcoloredbyownership_4,'KBA<br /><table><tr><td style="text-align: center;"><img src="legend/KBA_3_1NationalPark0.png" /></td><td>1-National Park</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_2SpecialReserve1.png" /></td><td>2-Special Reserve</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_3NatureReserve2.png" /></td><td>3-Nature Reserve</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_4BirdReserve3.png" /></td><td>4-Bird Reserve</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_5ProtectedMarineandTerrestrialArea4.png" /></td><td>5-Protected Marine and Terrestrial Area</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_6UnprotectedProposed5.png" /></td><td>6-Unprotected-Proposed</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_7UnprotectedListedbyCarlström1996Nevill2010KBA20136.png" /></td><td>7-Unprotected-Listed by Carlström 1996, Nevill 2010, KBA 2013</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_8Olderversionduplicate7.png" /></td><td>8-Older version (duplicate)</td></tr><tr><td style="text-align: center;"><img src="legend/KBA_3_8.png" /></td><td></td></tr></table>': layer_KBA_3,"Integrated Land Uses": layer_IntegratedLandUses_2,"Current Forest Cover": layer_CurrentForestCover_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_kbaLandownership_6.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['cadID'] !== null?String('<div style="color: #323232; font-size: 8pt; font-family: \'Times New Roman\', sans-serif;">' + layer.feature.properties['cadID']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_kbaLandownership_6'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_kbaLandownership_6,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'cadID'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        resetLabels([layer_kbaLandownership_6]);
+        map.on("zoomend", function(){
+            resetLabels([layer_kbaLandownership_6]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_kbaLandownership_6]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_kbaLandownership_6]);
+        });
+        </script>
+    </body>
+</html>
